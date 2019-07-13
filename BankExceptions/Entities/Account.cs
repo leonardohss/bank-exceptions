@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BankExceptions.Entities.Exceptions;
 
 namespace BankExceptions.Entities
 {
@@ -13,11 +11,12 @@ namespace BankExceptions.Entities
 
         public Account() { }
 
-        public Account(int number, string holder, double withdrawLimit)
+        public Account(int number, string holder, double balance, double withdrawLimit)
         {
             Number = number;
             Holder = holder;
-            WithdrawLimit = withdrawLimit;
+            Balance = balance;
+            WithdrawLimit = withdrawLimit; 
         }
 
         public void Deposit(double amount)
@@ -27,6 +26,16 @@ namespace BankExceptions.Entities
 
         public void Withdraw(double amount)
         {
+            if(Balance <= amount)
+            {
+                throw new DomainException("Not enough balance...");
+            }
+
+            if(WithdrawLimit <= amount)
+            {
+                throw new DomainException("The amount exceeds withdraw limit...");
+            }
+
             Balance =- amount;
         }
 
